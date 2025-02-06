@@ -148,11 +148,6 @@ namespace MonoBird {
 
             b.Draw(this.bird.Texture, this.bird.Position, this.bird.Rectangle, this.bird.Hue, this.bird.Rotation,
                         this.bird.Origin, this.bird.Scale, this.bird.Effect, 0.4f);
-
-            if (Main.debug == true) {
-
-                b.Draw(Main.pixel, new Vector2(this.bird.Position.X - (float)4.25, this.bird.Position.Y - (float)2.75), this.birdHitbox, Color.Yellow, this.bird.Rotation, new Vector2(this.birdHitbox.Width / 2, this.birdHitbox.Height / 2), 1f, SpriteEffects.None, 0.41f);
-            }
         }
 
         public Rectangle getBirdRectangle() => new Rectangle((int)(this.bird.Position.X - 24), (int)(this.bird.Position.Y - 18), this.birdHitbox.Width, this.birdHitbox.Height);
@@ -161,4 +156,4 @@ namespace MonoBird {
 
         public int getBirdTextureHeight() => this.birdTexture.Height;
     }
-}
+}   

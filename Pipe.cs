@@ -112,12 +112,6 @@ namespace MonoBird {
                                 sprite1.Origin, sprite1.Scale, sprite1.Effect, 0.2f);
                 }
             }
-
-            if (Main.debug == true) {
-
-                b.Draw(Main.pixel, new Vector2(this.pipeArray.First()[0].Position.X, this.pipeArray.First()[0].Position.Y), this.pipeArray.First()[0].Rectangle, Color.Green, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.31f);
-                b.Draw(Main.pixel, new Vector2(this.pipeArray.First()[1].Position.X, this.pipeArray.First()[1].Position.Y), this.pipeArray.First()[1].Rectangle, Color.Green, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.31f);
-            }
         }
 
         public Rectangle getTopPipeHitbox() {

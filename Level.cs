@@ -145,7 +145,6 @@ namespace MonoBird {
 
             if (Level.maxAlpha == true) {
 
-                Main.debug = false;
                 Main.gameReset = true;
             } 
 
