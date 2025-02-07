@@ -2,6 +2,12 @@
 
 A Flappy Bird Clone that has been created using C# and Monogame Framework.
 
+## Gameplay
+
+**Might take some time to load**
+
+<img src="https://github.com/user-attachments/assets/1c36bec6-261b-413c-8be7-48c9d0fcf076" width="500">
+
 ## Installation
 
 The following are the instructions for running the code:
