@@ -1,39 +1,63 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoBird {
     public class Level {
 
+        //UI sprites
         private Sprite Title;
         private Sprite Click;
         private Sprite GameOver;
         private Texture2D miscTexture;
+
+        //white flash that appears on death
         private Rectangle whiteFlash;
+
+        //black flash that appears on reset
         private Rectangle blackFlash;
 
+        //create game objects
         private Background Background;
         private Pipe Pipe;
-        private Bird bird;
+        private Bird Bird;
+
+        //font for score 
         private SpriteFont SpriteFont;
 
+        //score
         private int score = 0;
+
+        //timers for animations
         private int timer;
         private int animTimer;
+
+        //current frame for animation
         private int currentFrame;
+
+        //check if a sound has been played
         private bool hitPlayed, diePlayed;
+
+        //flash effects 
         private float whiteFlashAlpha = 1;
         private float blackFlashAlpha = 0.01f;
-        private bool playGameOverAnim = false;
-        private float textSpeed;
-        public static bool playAnim = false;
+
+        //check if the flash effects are on max Alpha
         public static bool maxAlpha = false;
+
+        //game over animation check
+        private bool playGameOverAnim = false;
+
+        //speed of the text that appears on death
+        private float textSpeed;
+
+        //check playAnim
+        public static bool playAnim = false;
 
         public Level() {
 
             this.Background = new Background();
             this.Pipe = new Pipe();
-            this.bird = new Bird();
+            this.Bird = new Bird();
 
             this.timer = 0;
             this.animTimer = 0;
@@ -43,6 +67,7 @@ namespace MonoBird {
             this.textSpeed = 20f;
         }
 
+        //load content
         public void LoadContent() {
 
             this.miscTexture = Main.contentManager.Load<Texture2D>("Assets\\Misc");
@@ -63,7 +88,7 @@ namespace MonoBird {
 
             this.Pipe.LoadContent();
 
-            this.bird.LoadContent(this.Background.getGroundHeight());
+            this.Bird.LoadContent(this.Background.getGroundHeight());
 
             this.whiteFlash = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
             this.blackFlash = this.whiteFlash;
@@ -74,6 +99,7 @@ namespace MonoBird {
             this.GameOver.Position = new Vector2((Main.screenWidth / 2) - (this.GameOver.Rectangle.Width / 2 * (Main.spriteScale + 2)), Main.screenHeight);
         }
 
+        //animate
         private void Animate(GameTime dt) {
 
             this.animTimer += (int)dt.ElapsedGameTime.TotalMilliseconds;
@@ -89,11 +115,14 @@ namespace MonoBird {
                 }
             }
 
+            //animate the "Click"
             this.Click.Rectangle = new Rectangle(this.currentFrame * 64, 66, 64, 31);
         }
 
+        //update
         public void Update(GameTime dt) {
 
+            //reset game properties
             if (Level.maxAlpha == true) {
 
                 this.GameOver.Position = new Vector2((Main.screenWidth / 2) - (this.GameOver.Rectangle.Width / 2 * (Main.spriteScale + 2)), Main.screenHeight);
@@ -115,6 +144,7 @@ namespace MonoBird {
 
             if (this.whiteFlashAlpha <= 0) this.playGameOverAnim = true;
 
+            //animate black flash
             if (Level.playAnim == true) {
 
                 if (Level.maxAlpha == false) this.blackFlashAlpha += 0.05f;
@@ -132,8 +162,10 @@ namespace MonoBird {
 
             if (this.blackFlashAlpha <= 0) Level.maxAlpha = false;
 
+            //play swoosh sound
             if (this.textSpeed == 19.5f) Sounds.SoundEffectInstances["swoosh"].Play();
 
+            //move game over text
             if (this.playGameOverAnim == true) {
 
                 this.GameOver.Position.Y -= this.textSpeed;
@@ -148,6 +180,7 @@ namespace MonoBird {
                 Main.gameReset = true;
             } 
 
+            //decrease white flash alpha
             if (Main.gameOver == true) {
 
                 this.whiteFlashAlpha -= 0.03f;
@@ -155,17 +188,22 @@ namespace MonoBird {
 
             this.whiteFlashAlpha = MathHelper.Clamp(this.whiteFlashAlpha, 0, 1);
 
+            //animate the "Click" if game is not started
             if (Main.gameStarted == false) {
 
                 this.Animate(dt);
             }
 
+            //update background
             this.Background.Update(dt);
 
+            //update pipe
             this.Pipe.Update(dt);
 
-            this.bird.Update(dt);
+            //update bird
+            this.Bird.Update(dt);
 
+            //play die sound
             if (this.hitPlayed == true) {
 
                 this.timer += (int)dt.ElapsedGameTime.TotalMilliseconds;
@@ -182,7 +220,8 @@ namespace MonoBird {
 
             this.timer = MathHelper.Clamp(this.timer, 0, 245);
 
-            if ((this.bird.getBirdRectangle().Intersects(this.Pipe.getTopPipeHitbox()) || this.bird.getBirdRectangle().Intersects(this.Pipe.getBottomPipeHitbox())) && Main.gameStarted) {
+            //check pipe collision
+            if ((this.Bird.getBirdRectangle().Intersects(this.Pipe.getTopPipeHitbox()) || this.Bird.getBirdRectangle().Intersects(this.Pipe.getBottomPipeHitbox())) && Main.gameStarted) {
 
                 Main.gameOver = true;
 
@@ -194,7 +233,8 @@ namespace MonoBird {
                 }
             }
 
-            if (this.bird.getBirdPosition().Y < 2 || this.bird.getBirdPosition().Y > (Main.screenHeight - (this.Background.getGroundHeight() * Main.spriteScale) - this.bird.getBirdTextureHeight() * Main.spriteScale / 2) - 2) {
+            //check ground and ceiling collision
+            if (this.Bird.getBirdPosition().Y < 2 || this.Bird.getBirdPosition().Y > (Main.screenHeight - (this.Background.getGroundHeight() * Main.spriteScale) - this.Bird.getBirdTextureHeight() * Main.spriteScale / 2) - 2) {
 
                 Main.gameOver = true;
 
@@ -206,7 +246,8 @@ namespace MonoBird {
                 }
             }
 
-            if (this.bird.getBirdPosition().X > this.Pipe.getPipePointPosition().X && Pipe.pipePassed == false) {
+            //increase score and play point sound
+            if (this.Bird.getBirdPosition().X > this.Pipe.getPipePointPosition().X && Pipe.pipePassed == false) {
 
                 this.score++;
                 Pipe.pipePassed = true;
@@ -216,8 +257,10 @@ namespace MonoBird {
             }
         }
 
+        //draw
         public void Draw(SpriteBatch b) {
 
+            //draw title and click me
             if (Main.gameStarted == false) {
 
                 b.Draw(this.Title.Texture, this.Title.Position, this.Title.Rectangle, this.Title.Hue, this.Title.Rotation,
@@ -227,29 +270,36 @@ namespace MonoBird {
                                 this.Click.Origin, this.Click.Scale, this.Click.Effect, 0.55f);
             }
 
+            //draw background
             this.Background.Draw(b);
 
+            //draw pipes
             this.Pipe.Draw(b);
 
-            this.bird.Draw(b);
+            //draw bird
+            this.Bird.Draw(b);
 
+            //draw score
             if (Main.gameStarted == true) {
 
                 b.DrawString(this.SpriteFont, "" + this.score, new Vector2(Main.screenWidth / 2 - this.SpriteFont.MeasureString("" + this.score).Length() / 2, 50), Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.5f);
             }
 
+            //draw game over text
             if (Main.gameOver == true) {
 
                 b.Draw(this.GameOver.Texture, this.GameOver.Position, this.GameOver.Rectangle, this.GameOver.Hue,
                             this.GameOver.Rotation, this.GameOver.Origin, this.GameOver.Scale, this.GameOver.Effect, 0.59f);
             }
 
+            //draw white flash
             if (Main.gameOver == true && this.whiteFlashAlpha > 0) {
 
                 b.Draw(Main.pixel, new Vector2(0, 0), this.whiteFlash,
                             Color.White * this.whiteFlashAlpha, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.6f);
             }
 
+            //draw black flash
             if (Level.playAnim == true) {
 
                 b.Draw(Main.pixel, new Vector2(0, 0), this.blackFlash,

@@ -20,9 +20,9 @@ namespace MonoBird {
 
         public static bool IsLeftClickDown() => Input.prevMState.LeftButton == ButtonState.Released && Input.currentMState.LeftButton == ButtonState.Pressed;
 
+        //check if the mouse is within the window bounds
         public static bool checkMouseCoordinates() => Input.getMouseRectangle().X < Main.screenWidth && Input.getMouseRectangle().Y < Main.screenHeight && Input.getMouseRectangle().X > 0 && Input.getMouseRectangle().Y > 0;
         
-
         public static void Update() {
 
             Input.prevKState = Input.currentKState;

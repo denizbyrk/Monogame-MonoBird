@@ -6,6 +6,7 @@ using System.Linq;
 namespace MonoBird {
     public class Background {
 
+        //create sprites for ground and sky
         private Sprite[] Sky;
         private List<Sprite> groundArray;
 
@@ -21,6 +22,7 @@ namespace MonoBird {
             this.groundArray = new List<Sprite>();
         }
 
+        //load content
         public void LoadContent() {
 
             Sprite s1, s2, s3;
@@ -59,8 +61,10 @@ namespace MonoBird {
             }
         }
 
+        //Update
         public void Update(GameTime dt) {
 
+            //loop the ground movement, so it seems infinite
             if (this.groundArray.First().Position.X < -36) {
 
                 foreach (var g in this.groundArray) {
@@ -69,20 +73,24 @@ namespace MonoBird {
                 }
             }
 
+            //move the ground
             foreach (var g in this.groundArray) {
 
                 g.Position.X -= Main.gameSpeed;
             }
         }
 
+        //draw
         public void Draw(SpriteBatch b) {
 
+            //draw sky
             foreach (var s in this.Sky) {
 
                 b.Draw(s.Texture, s.Position, null, s.Hue, s.Rotation,
                             s.Origin, s.Scale, s.Effect, 0.1f);
             }
 
+            //draw ground
             foreach (var g in this.groundArray) {
 
                 b.Draw(g.Texture, g.Position, null, g.Hue, g.Rotation,
@@ -90,6 +98,7 @@ namespace MonoBird {
             }
         }
 
+        //get ground height (used for detecting ground collision)
         public int getGroundHeight() => (int)this.groundArray.First().Texture.Height;
     }
 }
