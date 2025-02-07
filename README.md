@@ -48,7 +48,7 @@ Here is the brief explanation for what the classes are responsible for.
 
 - **Sprite.cs:** Class that stores the data for rendering sprites, including texture, position, rotation, scale, and effects.
 
-- **Level.cs:** The class that binds all the other classes together. It is also manages the fonts, screen effects, some sounds, and UI elements. 
+- **Level.cs:** The class that binds all the other classes together. It also manages the fonts, screen effects, some sounds, and UI elements. 
 
 - **Background.cs:** Class for drawing the ground and sky.
 
