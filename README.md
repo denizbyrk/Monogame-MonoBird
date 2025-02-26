@@ -38,6 +38,16 @@ The following are the instructions for running the code:
 
 - Run the code
 
+**Important**
+
+You may encounter some problems regarding font rendering. Make sure you have "Flappy Bird Font" font installed, or the game may not run. If you cannot install it for any reason, you can change the font manually.
+
+To change the font, open the project, navigate throught "Content -> Assets -> Font.spritefont". Then, find the font name field and change it to any font you have installed on your computer.
+```
+<FontName>Flappy Bird Font</FontName>
+```
+Change the "Flappy Bird Font" to font of your choice.
+
 ## How to Use
 
 The game only uses left mouse click as input. Press left click to start and jump.
